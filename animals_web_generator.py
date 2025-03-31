@@ -1,76 +1,112 @@
-import json
+import os
+from datetime import datetime
 
-def load_data(file_path):
-	"""" Loads JSON file """
-	with open(file_path, 'r') as handle:
-		return json.load(handle)
-	
+def generate_animal_card(animal):
+	"""
+	Generate HTML for a single animal card.
+	"""
+	# Get the animal name
+	name = animal.get('name', 'Unknown')
+		
+	# Start the animal card
+	html = f'''
+	<li class="cards__item">
+		<h2 class="card__title">{name}</h2>
+		
+		<div class="card__text">
+			<h3 class="section-heading">Taxonomy</h3>
+			<ul class="animal-details">
+	'''
+		
+	# Add taxonomy section
+	taxonomy = animal.get('taxonomy', {})
+	for key, value in taxonomy.items():
+		if value:  # Only include non-empty values
+			html += f'''
+				<li class="detail-item"><strong>{key.capitalize()}:</strong> {value}</li>
+			'''
+		
+	html += '''
+			</ul>
+	'''
+		
+	# Add locations section
+	locations = animal.get('locations', [])
+	if locations:
+		html += '''
+			<h3 class="section-heading">Locations</h3>
+			<ul class="locations-list">
+		'''
+		for location in locations:
+			html += f'''
+				<li>{location}</li>
+			'''
+		html += '''
+			</ul>
+		'''
 
-def read_template(file_path):
-	"""Reads the HTML template file"""
-	with open(file_path, "r") as handle:
-		return handle.read()
+	# Add characteristics section
+	html += '''
+			<h3 class="section-heading">Characteristics</h3>
+			<ul class="animal-details">
+	'''
 
-def write_html(file_path, content):
-	"""Writes the generated HTML to a file"""
-	with open(file_path, "w") as handle:
-		handle.write(content)
+	characteristics = animal.get('characteristics', {})
+	for key, value in characteristics.items():
+		if value:  # Only include non-empty values
+			html += f'''
+				<li class="detail-item"><strong>{key.capitalize().replace('_', ' ')}:</strong> {value}</li>
+			'''
+	html += '''
+			</ul>
+		</div>
+	</li>
+	'''
+	return html
 
-
-def serialize_animal(animal):
-	"""Converts a single animal dictionary to HTML"""
-
-	# Start with the opening list item tag
-	output = '<li class="cards__item">\n'
-
-	# Add the title (animal name)
-	output += f'  <div class="card__title">{animal["name"]}</div>\n'
-
-	# Start the card text div
-	output += '  <div class="card__text">\n'
-
-	# Start a proper list for animal details
-	output += '	<ul class="animal-details">\n'
-
-	# Add diet information
-	if 'characteristics' in animal and 'diet' in animal['characteristics']:
-		output += f'	  <li class="detail-item"><strong>Diet:</strong> {animal["characteristics"]["diet"]}</li>\n'
-
-	# Add the first location
-	if 'locations' in animal and len(animal['locations']) > 0:
-		output += f'	  <li class="detail-item"><strong>Location:</strong> {animal["locations"][0]}</li>\n'
-
-	# Add the type
-	if 'type' in animal:
-		output += f'	  <li class="detail-item"><strong>Type:</strong> {animal["type"]}</li>\n'
-	
-	# Close the lists and divs
-	output += '	</ul>\n'
-	output += '  </div>\n'
-	output += '</li>\n'
-
-	return output
-def generate_animal_html():
-	"""Main function to generate the animals HTML page"""
-	# Load the animal data
-	animals_data = load_data('animals_data.json')
-
-	# Generate HTML for all animals
-	animals_html = ''
+def generate_animals_content(animals_data, animal_name):
+	"""
+	Generate HTML content for all animals or error message if none found.
+	"""
+	if not animals_data:
+		return f'''
+		<div class="error-message">
+			<h2>No results found</h2>
+			<p>The animal "{animal_name}" doesn't exist in our database or no information was found.</p>
+			<p>Please try another animal name.</p>
+		</div>
+		'''
+	# Start the cards list
+	html = '<ul class="cards">'
+	# Generate HTML for each animal
 	for animal in animals_data:
-		animals_html += serialize_animal(animal)
+		html += generate_animal_card(animal)
+	# Close the cards list
+	html += '</ul>'
+	return html
 
-	# Read the HTML template
-	template = read_template('animals_template.html')
-		
-	# Replace the placeholder with our animal information
-	final_html = template.replace('__REPLACE_ANIMALS_INFO__', animals_html)
-		
-	# Write the final HTML to a new file
-	write_html('animals.html', final_html)
-		
-	print("HTML file generated successfully!")
+def generate_html_from_template(animals_data, animal_name):
+	"""	Generate HTML from template file and dynamic data."""
 
-# Run the main function
-if __name__ == "__main__":
-	generate_animal_html()
+	# Generate the animals content
+	animals_content = generate_animals_content(animals_data, animal_name)
+		
+	# Read the template file
+	template_path = os.path.join('templates', 'animals_template.html')
+	try:
+		with open(template_path, 'r', encoding='utf-8') as file:
+			template = file.read()
+	except FileNotFoundError:
+		print(f"Error: Template file not found at {template_path}")
+		return f"<html><body><h1>Error</h1><p>Template file not found. Please make sure {template_path} exists.</p></body></html>"
+		
+	# Replace placeholders with actual content
+	html_content = template.replace('{{ANIMAL_NAME}}', animal_name)
+	html_content = html_content.replace('{{ANIMALS_CONTENT}}', animals_content)
+		
+	return html_content
+
+def save_html(html_content, filename="animals.html"):
+	"""Save HTML content to a file.	"""
+	with open(filename, 'w', encoding='utf-8') as file:
+		file.write(html_content)
