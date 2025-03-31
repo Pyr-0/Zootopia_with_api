@@ -1,262 +1,836 @@
+<!DOCTYPE html>
 <html>
     <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>My Animal Repository</title>
         <style>
-        @gray-darker:               #444444;
-        @gray-dark:                 #696969;
-        @gray:                      #999999;
-        @gray-light:                #cccccc;
-        @gray-lighter:              #ececec;
-        @gray-lightest:             lighten(@gray-lighter,4%);
+            html {
+                background-color: #ffe9e9;
+            }
 
+            h1 {
+                text-align: center;
+                font-size: 40pt;
+                font-weight: normal;
+                margin-bottom: 10px;
+            }
+            
+            .subtitle {
+                text-align: center;
+                color: #696969;
+                margin-bottom: 30px;
+            }
 
-        html {
-          background-color: #ffe9e9;
-        }
+            body {
+                font-family: 'Roboto','Helvetica Neue', Helvetica, Arial, sans-serif;
+                font-style: normal;
+                font-weight: 400;
+                letter-spacing: 0;
+                padding: 1rem;
+                text-rendering: optimizeLegibility;
+                max-width: 1200px;
+                margin: auto;
+            }
 
-        h1 {
-            text-align: center;
-            font-size: 40pt;
-            font-weight: normal;
-        }
+            .cards {
+                list-style: none;
+                margin: 0;
+                padding: 0;
+                display: flex;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
 
-        body {
-          font-family: 'Roboto','Helvetica Neue', Helvetica, Arial, sans-serif;
-          font-style: normal;
-          font-weight: 400;
-          letter-spacing: 0;
-          padding: 1rem;
-          text-rendering: optimizeLegibility;
-          -webkit-font-smoothing: antialiased;
-          -moz-osx-font-smoothing: grayscale;
-          -moz-font-feature-settings: "liga" on;
-          width: 900px;
-          margin: auto;
-        }
+            .cards__item {
+                background-color: white;
+                border-radius: 0.25rem;
+                box-shadow: 0 20px 40px -14px rgba(0,0,0,0.25);
+                overflow: hidden;
+                padding: 1.5rem;
+                margin: 20px;
+                width: 300px;
+                transition: transform 0.3s ease, box-shadow 0.3s ease;
+            }
+            
+            /* Hover effect */
+            .cards__item:hover {
+                transform: translateY(-5px);
+                box-shadow: 0 30px 50px -14px rgba(0,0,0,0.4);
+            }
 
-        .cards {
-          list-style: none;
-          margin: 0;
-          padding: 0;
-        }
+            .card__title {
+                color: #696969;
+                font-size: 1.5rem;
+                font-weight: 300;
+                letter-spacing: 2px;
+                text-transform: uppercase;
+                margin-bottom: 15px;
+                border-bottom: 1px solid #ececec;
+                padding-bottom: 10px;
+            }
 
-        .cards__item {
-          background-color: white;
-          border-radius: 0.25rem;
-          box-shadow: 0 20px 40px -14px rgba(0,0,0,0.25);
-          overflow: hidden;
-          padding: 1rem;
-          margin: 50px;
-        }
-
-        .card__title {
-          color: #696969;
-          font-size: 1.25rem;
-          font-weight: 300;
-          letter-spacing: 2px;
-          text-transform: uppercase;
-        }
-
-        .card__text {
-          flex: 1 1 auto;
-          font-size: 0.95rem;
-          line-height: 2;
-          margin-bottom: 1.25rem;
-        }
-		  /* New styles for the animal details list */
-		  .animal-details {
-    list-style-type: none;
-    padding-left: 0;
-    margin-top: 10px;
-  }
-  
-  .detail-item {
-    margin-bottom: 8px;
-    padding-left: 8px;
-    border-left: 3px solid #e0e0e0;
-  }
-  
-  .detail-item strong {
-    color: #555;
-  }
-
-		
+            .card__text {
+                flex: 1 1 auto;
+                font-size: 0.95rem;
+                line-height: 1.8;
+                margin-bottom: 1.25rem;
+            }
+            
+            /* Animal details styles */
+            .animal-details {
+                list-style-type: none;
+                padding-left: 0;
+                margin-top: 10px;
+            }
+            
+            .detail-item {
+                margin-bottom: 8px;
+                padding-left: 8px;
+                border-left: 3px solid #e0e0e0;
+            }
+            
+            .detail-item strong {
+                color: #555;
+            }
+            
+            .section-heading {
+                color: #696969;
+                font-size: 1.1rem;
+                margin-top: 15px;
+                margin-bottom: 8px;
+            }
+            
+            .locations-list {
+                padding-left: 20px;
+                margin: 5px 0;
+                color: #555;
+            }
+            
+            .footer {
+                text-align: center;
+                margin-top: 50px;
+                color: #999999;
+                font-size: 0.9rem;
+            }
+            
+            /* For error message */
+            .error-message {
+                text-align: center;
+                padding: 30px;
+                background-color: white;
+                border-radius: 8px;
+                box-shadow: 0 20px 40px -14px rgba(0,0,0,0.25);
+                margin: 50px auto;
+                max-width: 600px;
+            }
+            
+            .error-message h2 {
+                color: #696969;
+            }
         </style>
     </head>
     <body>
-        <h1>My Animal Repository</h1>
+        <h1>My Zootopia with API </h1>
+        <p class="subtitle">Animal Searched: "monKey"</p>
+        
         <ul class="cards">
-            <li class="cards__item">
-  <div class="card__title">American Foxhound</div>
-  <div class="card__text">
-	<ul class="animal-details">
-	  <li class="detail-item"><strong>Diet:</strong> Omnivore</li>
-	  <li class="detail-item"><strong>Location:</strong> North-America</li>
+	<li class="cards__item">
+		<h2 class="card__title">Howler Monkey</h2>
+		
+		<div class="card__text">
+			<h3 class="section-heading">Taxonomy</h3>
+			<ul class="animal-details">
+	
+				<li class="detail-item"><strong>Kingdom:</strong> Animalia</li>
+			
+				<li class="detail-item"><strong>Phylum:</strong> Chordata</li>
+			
+				<li class="detail-item"><strong>Class:</strong> Mammalia</li>
+			
+				<li class="detail-item"><strong>Order:</strong> Primates</li>
+			
+				<li class="detail-item"><strong>Family:</strong> Atelidae</li>
+			
+				<li class="detail-item"><strong>Genus:</strong> Alouatta</li>
+			
+				<li class="detail-item"><strong>Scientific_name:</strong> Alouatta</li>
+			
+			</ul>
+	
+			<h3 class="section-heading">Locations</h3>
+			<ul class="locations-list">
+		
+				<li>Central-America</li>
+			
+				<li>South-America</li>
+			
+			</ul>
+		
+			<h3 class="section-heading">Characteristics</h3>
+			<ul class="animal-details">
+	
+				<li class="detail-item"><strong>Main prey:</strong> Fruit, Nuts, Seeds</li>
+			
+				<li class="detail-item"><strong>Habitat:</strong> Rainforest and dense jungle</li>
+			
+				<li class="detail-item"><strong>Predators:</strong> Jaguar, Snakes, Birds</li>
+			
+				<li class="detail-item"><strong>Diet:</strong> Omnivore</li>
+			
+				<li class="detail-item"><strong>Average litter size:</strong> 1</li>
+			
+				<li class="detail-item"><strong>Lifestyle:</strong> Troop</li>
+			
+				<li class="detail-item"><strong>Favorite food:</strong> Fruit</li>
+			
+				<li class="detail-item"><strong>Type:</strong> Mammal</li>
+			
+				<li class="detail-item"><strong>Slogan:</strong> Spends 80% of it's time resting!</li>
+			
+				<li class="detail-item"><strong>Color:</strong> BrownBlackTan</li>
+			
+				<li class="detail-item"><strong>Skin type:</strong> Hair</li>
+			
+				<li class="detail-item"><strong>Top speed:</strong> 18 mph</li>
+			
+				<li class="detail-item"><strong>Lifespan:</strong> 15-20 years</li>
+			
+				<li class="detail-item"><strong>Weight:</strong> 3-9kg (6.6-20lbs)</li>
+			
+			</ul>
+		</div>
+	</li>
+	
+	<li class="cards__item">
+		<h2 class="card__title">Monkey</h2>
+		
+		<div class="card__text">
+			<h3 class="section-heading">Taxonomy</h3>
+			<ul class="animal-details">
+	
+				<li class="detail-item"><strong>Kingdom:</strong> Animalia</li>
+			
+				<li class="detail-item"><strong>Phylum:</strong> Chordata</li>
+			
+				<li class="detail-item"><strong>Class:</strong> Mammalia</li>
+			
+				<li class="detail-item"><strong>Order:</strong> Primates</li>
+			
+				<li class="detail-item"><strong>Family:</strong> Cebidae</li>
+			
+				<li class="detail-item"><strong>Scientific_name:</strong> Macaca Fascicularis</li>
+			
+			</ul>
+	
+			<h3 class="section-heading">Locations</h3>
+			<ul class="locations-list">
+		
+				<li>Africa</li>
+			
+				<li>Asia</li>
+			
+				<li>Central-America</li>
+			
+				<li>Oceania</li>
+			
+				<li>South-America</li>
+			
+			</ul>
+		
+			<h3 class="section-heading">Characteristics</h3>
+			<ul class="animal-details">
+	
+				<li class="detail-item"><strong>Main prey:</strong> Fruit, Seeds, Insects</li>
+			
+				<li class="detail-item"><strong>Habitat:</strong> Tropical forests, grasslands and mountainous plains</li>
+			
+				<li class="detail-item"><strong>Predators:</strong> Birds, Snakes, Wildcats</li>
+			
+				<li class="detail-item"><strong>Diet:</strong> Omnivore</li>
+			
+				<li class="detail-item"><strong>Average litter size:</strong> 1</li>
+			
+				<li class="detail-item"><strong>Lifestyle:</strong> Troop</li>
+			
+				<li class="detail-item"><strong>Favorite food:</strong> Fruit</li>
+			
+				<li class="detail-item"><strong>Type:</strong> Mammal</li>
+			
+				<li class="detail-item"><strong>Slogan:</strong> There are around 260 known species!</li>
+			
+				<li class="detail-item"><strong>Color:</strong> BrownGreyYellowBlackWhiteTan</li>
+			
+				<li class="detail-item"><strong>Skin type:</strong> Hair</li>
+			
+				<li class="detail-item"><strong>Top speed:</strong> 35 mph</li>
+			
+				<li class="detail-item"><strong>Lifespan:</strong> 10-30 years</li>
+			
+				<li class="detail-item"><strong>Weight:</strong> 0.1-30kg (0.22-60lbs)</li>
+			
+			</ul>
+		</div>
+	</li>
+	
+	<li class="cards__item">
+		<h2 class="card__title">Patas Monkey</h2>
+		
+		<div class="card__text">
+			<h3 class="section-heading">Taxonomy</h3>
+			<ul class="animal-details">
+	
+				<li class="detail-item"><strong>Kingdom:</strong> Animalia</li>
+			
+				<li class="detail-item"><strong>Phylum:</strong> Chordata</li>
+			
+				<li class="detail-item"><strong>Class:</strong> Mammalia</li>
+			
+				<li class="detail-item"><strong>Order:</strong> Primates</li>
+			
+				<li class="detail-item"><strong>Family:</strong> Cercopithecidae</li>
+			
+				<li class="detail-item"><strong>Genus:</strong> Erythrocebus</li>
+			
+				<li class="detail-item"><strong>Scientific_name:</strong> Erythrocebus patas</li>
+			
+			</ul>
+	
+			<h3 class="section-heading">Locations</h3>
+			<ul class="locations-list">
+		
+				<li>Africa</li>
+			
+			</ul>
+		
+			<h3 class="section-heading">Characteristics</h3>
+			<ul class="animal-details">
+	
+				<li class="detail-item"><strong>Prey:</strong> Fruit, Insects, Eggs</li>
+			
+				<li class="detail-item"><strong>Name of young:</strong> Infant</li>
+			
+				<li class="detail-item"><strong>Group behavior:</strong> Troop</li>
+			
+				<li class="detail-item"><strong>Estimated population size:</strong> Decreasing</li>
+			
+				<li class="detail-item"><strong>Biggest threat:</strong> Hunting and capture</li>
+			
+				<li class="detail-item"><strong>Most distinctive feature:</strong> Red back and white moustache and beard</li>
+			
+				<li class="detail-item"><strong>Other name(s):</strong> Military Monkey, Hussar Monkey, Red Guenon</li>
+			
+				<li class="detail-item"><strong>Gestation period:</strong> 5 months</li>
+			
+				<li class="detail-item"><strong>Habitat:</strong> Savanna and open woodland</li>
+			
+				<li class="detail-item"><strong>Predators:</strong> Leopard, Hyena, Lion</li>
+			
+				<li class="detail-item"><strong>Diet:</strong> Omnivore</li>
+			
+				<li class="detail-item"><strong>Average litter size:</strong> 1</li>
+			
+				<li class="detail-item"><strong>Lifestyle:</strong> Diurnal</li>
+			
+				<li class="detail-item"><strong>Common name:</strong> Patas Monkey</li>
+			
+				<li class="detail-item"><strong>Number of species:</strong> 1</li>
+			
+				<li class="detail-item"><strong>Location:</strong> Central Africa</li>
+			
+				<li class="detail-item"><strong>Slogan:</strong> The fastest species of primate in the world!</li>
+			
+				<li class="detail-item"><strong>Group:</strong> Mammal</li>
+			
+				<li class="detail-item"><strong>Color:</strong> BrownGreyRedBlackWhite</li>
+			
+				<li class="detail-item"><strong>Skin type:</strong> Hair</li>
+			
+				<li class="detail-item"><strong>Top speed:</strong> 35 mph</li>
+			
+				<li class="detail-item"><strong>Lifespan:</strong> 12 - 20 years</li>
+			
+				<li class="detail-item"><strong>Weight:</strong> 4kg - 13kg (8.8lbs - 28.6lbs)</li>
+			
+				<li class="detail-item"><strong>Height:</strong> 45cm - 85cm (18in - 33in)</li>
+			
+				<li class="detail-item"><strong>Age of sexual maturity:</strong> 3 - 5 years</li>
+			
+				<li class="detail-item"><strong>Age of weaning:</strong> 6 months</li>
+			
+			</ul>
+		</div>
+	</li>
+	
+	<li class="cards__item">
+		<h2 class="card__title">Proboscis Monkey</h2>
+		
+		<div class="card__text">
+			<h3 class="section-heading">Taxonomy</h3>
+			<ul class="animal-details">
+	
+				<li class="detail-item"><strong>Kingdom:</strong> Animalia</li>
+			
+				<li class="detail-item"><strong>Phylum:</strong> Chordata</li>
+			
+				<li class="detail-item"><strong>Class:</strong> Mammalia</li>
+			
+				<li class="detail-item"><strong>Order:</strong> Primates</li>
+			
+				<li class="detail-item"><strong>Family:</strong> Cercopithecidae</li>
+			
+				<li class="detail-item"><strong>Genus:</strong> Nasalis</li>
+			
+				<li class="detail-item"><strong>Scientific_name:</strong> Nasalis larvatus</li>
+			
+			</ul>
+	
+			<h3 class="section-heading">Locations</h3>
+			<ul class="locations-list">
+		
+				<li>Asia</li>
+			
+			</ul>
+		
+			<h3 class="section-heading">Characteristics</h3>
+			<ul class="animal-details">
+	
+				<li class="detail-item"><strong>Prey:</strong> Leaves, Shoots, Fruits</li>
+			
+				<li class="detail-item"><strong>Name of young:</strong> Infant</li>
+			
+				<li class="detail-item"><strong>Group behavior:</strong> Troop</li>
+			
+				<li class="detail-item"><strong>Estimated population size:</strong> 7,000</li>
+			
+				<li class="detail-item"><strong>Biggest threat:</strong> Habitat loss</li>
+			
+				<li class="detail-item"><strong>Most distinctive feature:</strong> Long, fleshy nose and swollen stomach</li>
+			
+				<li class="detail-item"><strong>Other name(s):</strong> Long-Nosed Monkey</li>
+			
+				<li class="detail-item"><strong>Gestation period:</strong> 166 days</li>
+			
+				<li class="detail-item"><strong>Habitat:</strong> Coastal mangroves and riverine forests</li>
+			
+				<li class="detail-item"><strong>Predators:</strong> Clouded Leopard, Crocodile, Human</li>
+			
+				<li class="detail-item"><strong>Diet:</strong> Omnivore</li>
+			
+				<li class="detail-item"><strong>Average litter size:</strong> 1</li>
+			
+				<li class="detail-item"><strong>Lifestyle:</strong> Diurnal</li>
+			
+				<li class="detail-item"><strong>Common name:</strong> Proboscis Monkey</li>
+			
+				<li class="detail-item"><strong>Number of species:</strong> 2</li>
+			
+				<li class="detail-item"><strong>Location:</strong> Borneo</li>
+			
+				<li class="detail-item"><strong>Slogan:</strong> Natively found on the island of Borneo!</li>
+			
+				<li class="detail-item"><strong>Group:</strong> Mammal</li>
+			
+				<li class="detail-item"><strong>Color:</strong> BrownGreyRedWhiteTanOrange</li>
+			
+				<li class="detail-item"><strong>Skin type:</strong> Fur</li>
+			
+				<li class="detail-item"><strong>Top speed:</strong> 15 mph</li>
+			
+				<li class="detail-item"><strong>Lifespan:</strong> 15 - 20 years</li>
+			
+				<li class="detail-item"><strong>Weight:</strong> 7kg - 22kg (15lbs - 48lbs)</li>
+			
+				<li class="detail-item"><strong>Height:</strong> 53cm - 76cm (21in - 30in)</li>
+			
+				<li class="detail-item"><strong>Age of sexual maturity:</strong> 4 - 5 years</li>
+			
+				<li class="detail-item"><strong>Age of weaning:</strong> 7 months</li>
+			
+			</ul>
+		</div>
+	</li>
+	
+	<li class="cards__item">
+		<h2 class="card__title">Pygmy Marmoset (Finger Monkey)</h2>
+		
+		<div class="card__text">
+			<h3 class="section-heading">Taxonomy</h3>
+			<ul class="animal-details">
+	
+				<li class="detail-item"><strong>Kingdom:</strong> Animalia</li>
+			
+				<li class="detail-item"><strong>Phylum:</strong> Chordata</li>
+			
+				<li class="detail-item"><strong>Class:</strong> Mammalia</li>
+			
+				<li class="detail-item"><strong>Order:</strong> Primates</li>
+			
+				<li class="detail-item"><strong>Family:</strong> Callitrichidae</li>
+			
+				<li class="detail-item"><strong>Genus:</strong> Cebuella</li>
+			
+				<li class="detail-item"><strong>Scientific_name:</strong> Callithrix pygmaea</li>
+			
+			</ul>
+	
+			<h3 class="section-heading">Locations</h3>
+			<ul class="locations-list">
+		
+				<li>South-America</li>
+			
+			</ul>
+		
+			<h3 class="section-heading">Characteristics</h3>
+			<ul class="animal-details">
+	
+				<li class="detail-item"><strong>Main prey:</strong> Tree Sap, Fruit, Spiders, Insects</li>
+			
+				<li class="detail-item"><strong>Habitat:</strong> Outskirts of tropical rainforest</li>
+			
+				<li class="detail-item"><strong>Predators:</strong> Birds, Snakes, Wildcats</li>
+			
+				<li class="detail-item"><strong>Diet:</strong> Omnivore</li>
+			
+				<li class="detail-item"><strong>Average litter size:</strong> 2</li>
+			
+				<li class="detail-item"><strong>Lifestyle:</strong> Troop</li>
+			
+				<li class="detail-item"><strong>Favorite food:</strong> Tree Sap</li>
+			
+				<li class="detail-item"><strong>Type:</strong> Mammal</li>
+			
+				<li class="detail-item"><strong>Slogan:</strong> The smallest species of monkey in the world!</li>
+			
+				<li class="detail-item"><strong>Color:</strong> BrownGreyBlackWhiteTan</li>
+			
+				<li class="detail-item"><strong>Skin type:</strong> Fur</li>
+			
+				<li class="detail-item"><strong>Top speed:</strong> 24 mph</li>
+			
+				<li class="detail-item"><strong>Lifespan:</strong> 8-12 years</li>
+			
+				<li class="detail-item"><strong>Weight:</strong> 120-140g (4.2-4.9oz)</li>
+			
+			</ul>
+		</div>
+	</li>
+	
+	<li class="cards__item">
+		<h2 class="card__title">Spider Monkey</h2>
+		
+		<div class="card__text">
+			<h3 class="section-heading">Taxonomy</h3>
+			<ul class="animal-details">
+	
+				<li class="detail-item"><strong>Kingdom:</strong> Animalia</li>
+			
+				<li class="detail-item"><strong>Phylum:</strong> Chordata</li>
+			
+				<li class="detail-item"><strong>Class:</strong> Mammalia</li>
+			
+				<li class="detail-item"><strong>Order:</strong> Primates</li>
+			
+				<li class="detail-item"><strong>Family:</strong> Atelidae</li>
+			
+				<li class="detail-item"><strong>Genus:</strong> Ateles</li>
+			
+				<li class="detail-item"><strong>Scientific_name:</strong> Simia Paniscus</li>
+			
+			</ul>
+	
+			<h3 class="section-heading">Locations</h3>
+			<ul class="locations-list">
+		
+				<li>Central-America</li>
+			
+				<li>South-America</li>
+			
+			</ul>
+		
+			<h3 class="section-heading">Characteristics</h3>
+			<ul class="animal-details">
+	
+				<li class="detail-item"><strong>Main prey:</strong> Fruit, Nuts, Leaves</li>
+			
+				<li class="detail-item"><strong>Habitat:</strong> Tropical jungle and rainforest</li>
+			
+				<li class="detail-item"><strong>Predators:</strong> Human, Eagles, Jaguar</li>
+			
+				<li class="detail-item"><strong>Diet:</strong> Omnivore</li>
+			
+				<li class="detail-item"><strong>Average litter size:</strong> 1</li>
+			
+				<li class="detail-item"><strong>Lifestyle:</strong> Troop</li>
+			
+				<li class="detail-item"><strong>Favorite food:</strong> Fruit</li>
+			
+				<li class="detail-item"><strong>Type:</strong> Mammal</li>
+			
+				<li class="detail-item"><strong>Slogan:</strong> Found in the tropical jungles of South America!</li>
+			
+				<li class="detail-item"><strong>Color:</strong> BrownGreyBlackWhite</li>
+			
+				<li class="detail-item"><strong>Skin type:</strong> Hair</li>
+			
+				<li class="detail-item"><strong>Top speed:</strong> 35 mph</li>
+			
+				<li class="detail-item"><strong>Lifespan:</strong> 15-27 years</li>
+			
+				<li class="detail-item"><strong>Weight:</strong> 6.4-12kg (14-26lbs)</li>
+			
+			</ul>
+		</div>
+	</li>
+	
+	<li class="cards__item">
+		<h2 class="card__title">Squirrel Monkey</h2>
+		
+		<div class="card__text">
+			<h3 class="section-heading">Taxonomy</h3>
+			<ul class="animal-details">
+	
+				<li class="detail-item"><strong>Kingdom:</strong> Animalia</li>
+			
+				<li class="detail-item"><strong>Phylum:</strong> Chordata</li>
+			
+				<li class="detail-item"><strong>Class:</strong> Mammalia</li>
+			
+				<li class="detail-item"><strong>Order:</strong> Primates</li>
+			
+				<li class="detail-item"><strong>Family:</strong> Cebidae</li>
+			
+				<li class="detail-item"><strong>Genus:</strong> Saimiri</li>
+			
+				<li class="detail-item"><strong>Scientific_name:</strong> Saimiri</li>
+			
+			</ul>
+	
+			<h3 class="section-heading">Locations</h3>
+			<ul class="locations-list">
+		
+				<li>Central-America</li>
+			
+				<li>South-America</li>
+			
+			</ul>
+		
+			<h3 class="section-heading">Characteristics</h3>
+			<ul class="animal-details">
+	
+				<li class="detail-item"><strong>Prey:</strong> Fruit, Insects, Flowers</li>
+			
+				<li class="detail-item"><strong>Name of young:</strong> Infant</li>
+			
+				<li class="detail-item"><strong>Group behavior:</strong> Troop</li>
+			
+				<li class="detail-item"><strong>Estimated population size:</strong> Not Known</li>
+			
+				<li class="detail-item"><strong>Biggest threat:</strong> Habitat loss</li>
+			
+				<li class="detail-item"><strong>Most distinctive feature:</strong> Longer tail than body used for balance</li>
+			
+				<li class="detail-item"><strong>Other name(s):</strong> Deaths Head Monkey</li>
+			
+				<li class="detail-item"><strong>Gestation period:</strong> 170 days</li>
+			
+				<li class="detail-item"><strong>Habitat:</strong> Dense, tropical jungle close to a stream</li>
+			
+				<li class="detail-item"><strong>Predators:</strong> Birds of Prey, Snakes, Humans</li>
+			
+				<li class="detail-item"><strong>Diet:</strong> Omnivore</li>
+			
+				<li class="detail-item"><strong>Average litter size:</strong> 1</li>
+			
+				<li class="detail-item"><strong>Lifestyle:</strong> Diurnal</li>
+			
+				<li class="detail-item"><strong>Common name:</strong> Squirrel Monkey</li>
+			
+				<li class="detail-item"><strong>Number of species:</strong> 5</li>
+			
+				<li class="detail-item"><strong>Location:</strong> Central and South America</li>
+			
+				<li class="detail-item"><strong>Slogan:</strong> Lives in groups of up to 500 individuals!</li>
+			
+				<li class="detail-item"><strong>Group:</strong> Mammal</li>
+			
+				<li class="detail-item"><strong>Color:</strong> GreyYellowBlackOlive</li>
+			
+				<li class="detail-item"><strong>Skin type:</strong> Fur</li>
+			
+				<li class="detail-item"><strong>Top speed:</strong> 22 mph</li>
+			
+				<li class="detail-item"><strong>Lifespan:</strong> 15 - 20 years</li>
+			
+				<li class="detail-item"><strong>Weight:</strong> 0.75kg -1.1k g (1.7lbs - 2.4lbs)</li>
+			
+				<li class="detail-item"><strong>Height:</strong> 25cm - 36cm (9.8in - 14in)</li>
+			
+				<li class="detail-item"><strong>Age of sexual maturity:</strong> 3 - 5 years</li>
+			
+				<li class="detail-item"><strong>Age of weaning:</strong> 4 months</li>
+			
+			</ul>
+		</div>
+	</li>
+	
+	<li class="cards__item">
+		<h2 class="card__title">Vervet Monkey</h2>
+		
+		<div class="card__text">
+			<h3 class="section-heading">Taxonomy</h3>
+			<ul class="animal-details">
+	
+				<li class="detail-item"><strong>Kingdom:</strong> Animalia</li>
+			
+				<li class="detail-item"><strong>Phylum:</strong> Chordata</li>
+			
+				<li class="detail-item"><strong>Class:</strong> Mammalia</li>
+			
+				<li class="detail-item"><strong>Order:</strong> Primates</li>
+			
+				<li class="detail-item"><strong>Family:</strong> Cercopithecidae</li>
+			
+				<li class="detail-item"><strong>Genus:</strong> Chlorocebus</li>
+			
+				<li class="detail-item"><strong>Scientific_name:</strong> Chlorocebus pygerythrus</li>
+			
+			</ul>
+	
+			<h3 class="section-heading">Locations</h3>
+			<ul class="locations-list">
+		
+				<li>Africa</li>
+			
+			</ul>
+		
+			<h3 class="section-heading">Characteristics</h3>
+			<ul class="animal-details">
+	
+				<li class="detail-item"><strong>Prey:</strong> Leaves, Fruits, Insects</li>
+			
+				<li class="detail-item"><strong>Name of young:</strong> Infant</li>
+			
+				<li class="detail-item"><strong>Group behavior:</strong> Troop</li>
+			
+				<li class="detail-item"><strong>Estimated population size:</strong> Sustainable</li>
+			
+				<li class="detail-item"><strong>Biggest threat:</strong> Habitat loss</li>
+			
+				<li class="detail-item"><strong>Most distinctive feature:</strong> Black face with white ear tufts</li>
+			
+				<li class="detail-item"><strong>Other name(s):</strong> Vervet</li>
+			
+				<li class="detail-item"><strong>Gestation period:</strong> 163 days</li>
+			
+				<li class="detail-item"><strong>Habitat:</strong> Riverine acacia forests</li>
+			
+				<li class="detail-item"><strong>Predators:</strong> Leopard, Serval, Crocodile</li>
+			
+				<li class="detail-item"><strong>Diet:</strong> Omnivore</li>
+			
+				<li class="detail-item"><strong>Average litter size:</strong> 1</li>
+			
+				<li class="detail-item"><strong>Lifestyle:</strong> Diurnal</li>
+			
+				<li class="detail-item"><strong>Common name:</strong> Vervet Monkey</li>
+			
+				<li class="detail-item"><strong>Number of species:</strong> 6</li>
+			
+				<li class="detail-item"><strong>Location:</strong> Eastern Africa</li>
+			
+				<li class="detail-item"><strong>Slogan:</strong> Rarely found more than 450m from trees!</li>
+			
+				<li class="detail-item"><strong>Group:</strong> Mammal</li>
+			
+				<li class="detail-item"><strong>Color:</strong> BrownGreyBlackSilverOlive</li>
+			
+				<li class="detail-item"><strong>Skin type:</strong> Fur</li>
+			
+				<li class="detail-item"><strong>Top speed:</strong> 30 mph</li>
+			
+				<li class="detail-item"><strong>Lifespan:</strong> 12 - 24 years</li>
+			
+				<li class="detail-item"><strong>Weight:</strong> 3.5kg - 5kg (7lbs - 10lbs)</li>
+			
+				<li class="detail-item"><strong>Length:</strong> 46cm - 66cm (17.9in - 25.7in)</li>
+			
+				<li class="detail-item"><strong>Age of sexual maturity:</strong> 2 - 5 years</li>
+			
+				<li class="detail-item"><strong>Age of weaning:</strong> 8 - 12 months</li>
+			
+			</ul>
+		</div>
+	</li>
+	
+	<li class="cards__item">
+		<h2 class="card__title">Woolly Monkey</h2>
+		
+		<div class="card__text">
+			<h3 class="section-heading">Taxonomy</h3>
+			<ul class="animal-details">
+	
+				<li class="detail-item"><strong>Kingdom:</strong> Animalia</li>
+			
+				<li class="detail-item"><strong>Phylum:</strong> Chordata</li>
+			
+				<li class="detail-item"><strong>Class:</strong> Mammalia</li>
+			
+				<li class="detail-item"><strong>Order:</strong> Primates</li>
+			
+				<li class="detail-item"><strong>Family:</strong> Atelidae</li>
+			
+				<li class="detail-item"><strong>Genus:</strong> Lagothrix</li>
+			
+				<li class="detail-item"><strong>Scientific_name:</strong> Lagothrix Lagotricha</li>
+			
+			</ul>
+	
+			<h3 class="section-heading">Locations</h3>
+			<ul class="locations-list">
+		
+				<li>South-America</li>
+			
+			</ul>
+		
+			<h3 class="section-heading">Characteristics</h3>
+			<ul class="animal-details">
+	
+				<li class="detail-item"><strong>Main prey:</strong> Fruit, Seeds, Insects</li>
+			
+				<li class="detail-item"><strong>Habitat:</strong> Humid and mature tropical forests</li>
+			
+				<li class="detail-item"><strong>Predators:</strong> Human, Wildcats, Birds of Prey</li>
+			
+				<li class="detail-item"><strong>Diet:</strong> Omnivore</li>
+			
+				<li class="detail-item"><strong>Average litter size:</strong> 1</li>
+			
+				<li class="detail-item"><strong>Lifestyle:</strong> Troop</li>
+			
+				<li class="detail-item"><strong>Favorite food:</strong> Fruit</li>
+			
+				<li class="detail-item"><strong>Type:</strong> Mammal</li>
+			
+				<li class="detail-item"><strong>Slogan:</strong> Has a long, strong prehensile tail!</li>
+			
+				<li class="detail-item"><strong>Color:</strong> BrownGreyBlack</li>
+			
+				<li class="detail-item"><strong>Skin type:</strong> Fur</li>
+			
+				<li class="detail-item"><strong>Top speed:</strong> 35 mph</li>
+			
+				<li class="detail-item"><strong>Lifespan:</strong> 7-10 years</li>
+			
+				<li class="detail-item"><strong>Weight:</strong> 5-8kg (11-18lbs)</li>
+			
+			</ul>
+		</div>
+	</li>
 	</ul>
-  </div>
-</li>
-<li class="cards__item">
-  <div class="card__title">Arctic Fox</div>
-  <div class="card__text">
-	<ul class="animal-details">
-	  <li class="detail-item"><strong>Diet:</strong> Carnivore</li>
-	  <li class="detail-item"><strong>Location:</strong> Eurasia</li>
-	</ul>
-  </div>
-</li>
-<li class="cards__item">
-  <div class="card__title">Cross Fox</div>
-  <div class="card__text">
-	<ul class="animal-details">
-	  <li class="detail-item"><strong>Diet:</strong> Carnivore</li>
-	  <li class="detail-item"><strong>Location:</strong> North-America</li>
-	</ul>
-  </div>
-</li>
-<li class="cards__item">
-  <div class="card__title">Darwin’s fox</div>
-  <div class="card__text">
-	<ul class="animal-details">
-	  <li class="detail-item"><strong>Diet:</strong> Omnivore</li>
-	  <li class="detail-item"><strong>Location:</strong> South-America</li>
-	</ul>
-  </div>
-</li>
-<li class="cards__item">
-  <div class="card__title">English Foxhound</div>
-  <div class="card__text">
-	<ul class="animal-details">
-	  <li class="detail-item"><strong>Diet:</strong> Omnivore</li>
-	  <li class="detail-item"><strong>Location:</strong> Europe</li>
-	</ul>
-  </div>
-</li>
-<li class="cards__item">
-  <div class="card__title">Fennec Fox</div>
-  <div class="card__text">
-	<ul class="animal-details">
-	  <li class="detail-item"><strong>Diet:</strong> Omnivore</li>
-	  <li class="detail-item"><strong>Location:</strong> Africa</li>
-	</ul>
-  </div>
-</li>
-<li class="cards__item">
-  <div class="card__title">Fox</div>
-  <div class="card__text">
-	<ul class="animal-details">
-	  <li class="detail-item"><strong>Diet:</strong> Carnivore</li>
-	  <li class="detail-item"><strong>Location:</strong> Africa</li>
-	</ul>
-  </div>
-</li>
-<li class="cards__item">
-  <div class="card__title">Fox Snakes</div>
-  <div class="card__text">
-	<ul class="animal-details">
-	  <li class="detail-item"><strong>Diet:</strong> Carnivore</li>
-	  <li class="detail-item"><strong>Location:</strong> North-America</li>
-	</ul>
-  </div>
-</li>
-<li class="cards__item">
-  <div class="card__title">Fox Squirrel</div>
-  <div class="card__text">
-	<ul class="animal-details">
-	  <li class="detail-item"><strong>Diet:</strong> Omnivore</li>
-	  <li class="detail-item"><strong>Location:</strong> Central-America</li>
-	</ul>
-  </div>
-</li>
-<li class="cards__item">
-  <div class="card__title">Fox Terrier</div>
-  <div class="card__text">
-	<ul class="animal-details">
-	  <li class="detail-item"><strong>Diet:</strong> Omnivore</li>
-	  <li class="detail-item"><strong>Location:</strong> Europe</li>
-	</ul>
-  </div>
-</li>
-<li class="cards__item">
-  <div class="card__title">Golden-Crowned Flying Fox</div>
-  <div class="card__text">
-	<ul class="animal-details">
-	  <li class="detail-item"><strong>Diet:</strong> Herbivore</li>
-	  <li class="detail-item"><strong>Location:</strong> Asia</li>
-	</ul>
-  </div>
-</li>
-<li class="cards__item">
-  <div class="card__title">Gray Fox</div>
-  <div class="card__text">
-	<ul class="animal-details">
-	  <li class="detail-item"><strong>Diet:</strong> Omnivore</li>
-	  <li class="detail-item"><strong>Location:</strong> Central-America</li>
-	</ul>
-  </div>
-</li>
-<li class="cards__item">
-  <div class="card__title">Kit Fox</div>
-  <div class="card__text">
-	<ul class="animal-details">
-	  <li class="detail-item"><strong>Diet:</strong> Omnivore</li>
-	  <li class="detail-item"><strong>Location:</strong> Central-America</li>
-	</ul>
-  </div>
-</li>
-<li class="cards__item">
-  <div class="card__title">Marble Fox</div>
-  <div class="card__text">
-	<ul class="animal-details">
-	  <li class="detail-item"><strong>Diet:</strong> Omnivore</li>
-	  <li class="detail-item"><strong>Location:</strong> North-America</li>
-	</ul>
-  </div>
-</li>
-<li class="cards__item">
-  <div class="card__title">Red Fox</div>
-  <div class="card__text">
-	<ul class="animal-details">
-	  <li class="detail-item"><strong>Diet:</strong> Omnivore</li>
-	  <li class="detail-item"><strong>Location:</strong> Africa</li>
-	</ul>
-  </div>
-</li>
-<li class="cards__item">
-  <div class="card__title">Smooth Fox Terrier</div>
-  <div class="card__text">
-	<ul class="animal-details">
-	  <li class="detail-item"><strong>Diet:</strong> Omnivore</li>
-	  <li class="detail-item"><strong>Location:</strong> Europe</li>
-	</ul>
-  </div>
-</li>
-<li class="cards__item">
-  <div class="card__title">Tibetan Fox</div>
-  <div class="card__text">
-	<ul class="animal-details">
-	  <li class="detail-item"><strong>Diet:</strong> Carnivore</li>
-	  <li class="detail-item"><strong>Location:</strong> Asia</li>
-	</ul>
-  </div>
-</li>
-<li class="cards__item">
-  <div class="card__title">Toy Fox Terrier</div>
-  <div class="card__text">
-	<ul class="animal-details">
-	  <li class="detail-item"><strong>Diet:</strong> Omnivore</li>
-	  <li class="detail-item"><strong>Location:</strong> North-America</li>
-	</ul>
-  </div>
-</li>
-<li class="cards__item">
-  <div class="card__title">Wire Fox Terrier</div>
-  <div class="card__text">
-	<ul class="animal-details">
-	  <li class="detail-item"><strong>Diet:</strong> Omnivore</li>
-	  <li class="detail-item"><strong>Location:</strong> Europe</li>
-	</ul>
-  </div>
-</li>
-
-        </ul>
+        
+        <div class="footer">
+            <p>Data provided by API Ninjas | My Zootopia API by Milton Rojas Echeverri</p>
+        </div>
     </body>
 </html>
