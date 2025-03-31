@@ -91,7 +91,6 @@ Install all dependencies with:
 ```sh
 pip install -r requirements.txt
 ```
-
 ---
 
 ## 🔮 Future Improvements

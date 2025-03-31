@@ -17,7 +17,7 @@ def generate_animal_card(animal):
 			<h3 class="section-heading">Taxonomy</h3>
 			<ul class="animal-details">
 	'''
-		
+
 	# Add taxonomy section
 	taxonomy = animal.get('taxonomy', {})
 	for key, value in taxonomy.items():
@@ -25,11 +25,11 @@ def generate_animal_card(animal):
 			html += f'''
 				<li class="detail-item"><strong>{key.capitalize()}:</strong> {value}</li>
 			'''
-		
+
 	html += '''
 			</ul>
 	'''
-		
+
 	# Add locations section
 	locations = animal.get('locations', [])
 	if locations:
@@ -90,7 +90,7 @@ def generate_html_from_template(animals_data, animal_name):
 
 	# Generate the animals content
 	animals_content = generate_animals_content(animals_data, animal_name)
-		
+
 	# Read the template file
 	template_path = os.path.join('templates', 'animals_template.html')
 	try:
@@ -99,7 +99,7 @@ def generate_html_from_template(animals_data, animal_name):
 	except FileNotFoundError:
 		print(f"Error: Template file not found at {template_path}")
 		return f"<html><body><h1>Error</h1><p>Template file not found. Please make sure {template_path} exists.</p></body></html>"
-		
+
 	# Replace placeholders with actual content
 	html_content = template.replace('{{ANIMAL_NAME}}', animal_name)
 	html_content = html_content.replace('{{ANIMALS_CONTENT}}', animals_content)
